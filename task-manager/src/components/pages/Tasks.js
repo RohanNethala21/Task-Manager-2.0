@@ -299,9 +299,17 @@ const NoTasksMessage = styled.div`
 `;
 
 const Tasks = () => {
-  const { tasks, addTask, deleteTask, toggleTaskCompletion } = useTask();
+  const { tasks, addTask, deleteTask, toggleTaskCompletion, editTask } = useTask();
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const [showEditTaskForm, setShowEditTaskForm] = useState(false);
   const [newTask, setNewTask] = useState({
+    title: '',
+    category: 'Work',
+    dueDate: '',
+    priority: 'medium'
+  });
+  const [editingTask, setEditingTask] = useState({
+    id: null,
     title: '',
     category: 'Work',
     dueDate: '',
@@ -312,6 +320,19 @@ const Tasks = () => {
   
   const handleAddTaskClick = () => {
     setShowAddTaskForm(true);
+    setShowEditTaskForm(false);
+  };
+  
+  const handleEditTaskClick = (task) => {
+    setEditingTask({
+      id: task.id,
+      title: task.title,
+      category: task.category,
+      dueDate: task.dueDate || '',
+      priority: task.priority
+    });
+    setShowEditTaskForm(true);
+    setShowAddTaskForm(false);
   };
   
   const handleInputChange = (e) => {
@@ -322,9 +343,24 @@ const Tasks = () => {
     });
   };
   
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditingTask({
+      ...editingTask,
+      [name]: value
+    });
+  };
+  
   const handleCategorySelect = (category) => {
     setNewTask({
       ...newTask,
+      category
+    });
+  };
+  
+  const handleEditCategorySelect = (category) => {
+    setEditingTask({
+      ...editingTask,
       category
     });
   };
@@ -339,6 +375,7 @@ const Tasks = () => {
     
     addTask(newTask);
     
+    // Reset form
     setNewTask({
       title: '',
       category: 'Work',
@@ -349,11 +386,39 @@ const Tasks = () => {
     setShowAddTaskForm(false);
   };
   
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!editingTask.title) {
+      alert('Please enter a task title');
+      return;
+    }
+    
+    // Extract the id and create an updated task object
+    const { id, ...updatedTask } = editingTask;
+    
+    // Call the editTask function from context
+    editTask(id, updatedTask);
+    
+    // Reset form and hide it
+    setEditingTask({
+      id: null,
+      title: '',
+      category: 'Work',
+      dueDate: '',
+      priority: 'medium'
+    });
+    
+    setShowEditTaskForm(false);
+  };
+  
   const filteredTasks = tasks.filter(task => {
+    // Apply search filter
     if (searchTerm && !task.title.toLowerCase().includes(searchTerm.toLowerCase())) {
       return false;
     }
     
+    // Apply completion filter
     if (filter === 'completed' && !task.completed) {
       return false;
     }
@@ -365,6 +430,7 @@ const Tasks = () => {
     return true;
   });
   
+  // Check if a date is overdue
   const isOverdue = (dateString) => {
     if (!dateString) return false;
     const dueDate = new Date(dateString);
@@ -468,6 +534,85 @@ const Tasks = () => {
         </AddNewTaskSection>
       )}
       
+      {showEditTaskForm && (
+        <AddNewTaskSection>
+          <SectionTitle>Edit Task</SectionTitle>
+          <TaskForm onSubmit={handleEditSubmit}>
+            <FormRow>
+              <FormGroup>
+                <Label htmlFor="editTitle">Task Name</Label>
+                <Input 
+                  type="text" 
+                  id="editTitle" 
+                  name="title"
+                  placeholder="Enter task name" 
+                  value={editingTask.title}
+                  onChange={handleEditInputChange}
+                />
+              </FormGroup>
+              
+              <FormGroup>
+                <Label htmlFor="editDueDate">Due Date</Label>
+                <Input 
+                  type="date" 
+                  id="editDueDate" 
+                  name="dueDate"
+                  value={editingTask.dueDate}
+                  onChange={handleEditInputChange}
+                />
+              </FormGroup>
+            </FormRow>
+            
+            <FormRow>
+              <FormGroup>
+                <Label>Priority</Label>
+                <Select 
+                  name="priority"
+                  value={editingTask.priority}
+                  onChange={handleEditInputChange}
+                >
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </Select>
+              </FormGroup>
+              
+              <FormGroup>
+                <Label>Category</Label>
+                <CategoryOptions>
+                  <CategoryOption 
+                    selected={editingTask.category === 'Work'} 
+                    onClick={() => handleEditCategorySelect('Work')}
+                  >
+                    Work
+                  </CategoryOption>
+                  <CategoryOption 
+                    selected={editingTask.category === 'Personal'} 
+                    onClick={() => handleEditCategorySelect('Personal')}
+                  >
+                    Personal
+                  </CategoryOption>
+                  <CategoryOption 
+                    selected={editingTask.category === 'School'} 
+                    onClick={() => handleEditCategorySelect('School')}
+                  >
+                    School
+                  </CategoryOption>
+                  <CategoryOption 
+                    selected={editingTask.category === 'Other'} 
+                    onClick={() => handleEditCategorySelect('Other')}
+                  >
+                    Other
+                  </CategoryOption>
+                </CategoryOptions>
+              </FormGroup>
+            </FormRow>
+            
+            <SubmitButton type="submit">Update Task</SubmitButton>
+          </TaskForm>
+        </AddNewTaskSection>
+      )}
+      
       <TaskListSection>
         <SectionTitle>Task List</SectionTitle>
         
@@ -497,6 +642,12 @@ const Tasks = () => {
                 </TaskContent>
                 
                 <TaskActions>
+                  <ActionButton onClick={() => handleEditTaskClick(task)}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
+                    </svg>
+                  </ActionButton>
+                  
                   <ActionButton onClick={() => deleteTask(task.id)}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
