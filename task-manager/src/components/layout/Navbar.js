@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const NavbarContainer = styled.nav`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 0 20px;
   position: sticky;
@@ -98,7 +99,7 @@ const MobileMenu = styled.div`
   top: 60px;
   left: 0;
   right: 0;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
   
@@ -177,6 +178,7 @@ const Navbar = () => {
         </NavLinks>
         
         <UserSection>
+          <ThemeToggle />
           <UserName>Hello, {user?.name || 'User'}</UserName>
           <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </UserSection>

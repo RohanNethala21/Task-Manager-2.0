@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AccountContainer = styled.div`
   padding: 20px;
@@ -84,7 +85,7 @@ const AccountSettingsSection = styled.div`
 `;
 
 const SettingsForm = styled.form`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -152,7 +153,7 @@ const DangerZoneSection = styled.div`
 `;
 
 const DangerZoneContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -220,6 +221,7 @@ const DeleteButton = styled.button`
 
 const Account = () => {
   const [emailReminders, setEmailReminders] = useState('enabled');
+  const { user } = useAuth();
   
   return (
     <AccountContainer>
@@ -231,8 +233,8 @@ const Account = () => {
             </svg>
           </ProfileAvatar>
           <ProfileDetails>
-            <ProfileName>User's Name</ProfileName>
-            <ProfileEmail>Premium User</ProfileEmail>
+            <ProfileName>{user?.name || 'User'}</ProfileName>
+            <ProfileEmail>{user?.email || 'Premium User'}</ProfileEmail>
             <ProfileDescription>Manage your account and profile settings here.</ProfileDescription>
           </ProfileDetails>
         </ProfileInfo>

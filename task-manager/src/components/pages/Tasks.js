@@ -79,7 +79,7 @@ const TaskCardsContainer = styled.div`
 `;
 
 const TaskCard = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -161,7 +161,7 @@ const AddNewTaskSection = styled.div`
 `;
 
 const TaskForm = styled.form`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -255,7 +255,7 @@ const FiltersContainer = styled.div`
 
 const FilterCard = styled.div`
   flex: 1;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -292,7 +292,7 @@ const FilterOption = styled.div`
 const NoTasksMessage = styled.div`
   text-align: center;
   padding: 30px;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: ${props => props.theme.colors.darkGray};
@@ -375,7 +375,7 @@ const Tasks = () => {
     
     addTask(newTask);
     
-    // Reset form
+    // Here we reset the form
     setNewTask({
       title: '',
       category: 'Work',
@@ -394,10 +394,10 @@ const Tasks = () => {
       return;
     }
     
-    // Extract the id and create an updated task object
+    // Here we extract the id and create an updated task object
     const { id, ...updatedTask } = editingTask;
     
-    // Call the editTask function from context
+    // Here we call the editTask function from context
     editTask(id, updatedTask);
     
     // Reset form and hide it

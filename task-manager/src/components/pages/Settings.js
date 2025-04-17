@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SettingsContainer = styled.div`
   padding: 20px;
@@ -90,7 +91,7 @@ const ThemeOptions = styled.div`
 
 const ThemeCard = styled.div`
   flex: 1;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -124,7 +125,7 @@ const ThemeSubtitle = styled.p`
 `;
 
 const CustomThemeSection = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -147,7 +148,7 @@ const ColorPickersContainer = styled.div`
 `;
 
 const ColorPickerGroup = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -196,6 +197,7 @@ const Button = styled.button`
 const Settings = () => {
   const [primaryColor, setPrimaryColor] = useState('#000000');
   const [secondaryColor, setSecondaryColor] = useState('#ffffff');
+  const { user } = useAuth();
   
   return (
     <SettingsContainer>
@@ -207,8 +209,8 @@ const Settings = () => {
             </svg>
           </ProfileAvatar>
           <ProfileDetails>
-            <ProfileName>User123</ProfileName>
-            <ProfileEmail>Manage your preferences</ProfileEmail>
+            <ProfileName>{user?.name || 'User'}</ProfileName>
+            <ProfileEmail>{user?.email || 'Manage your preferences'}</ProfileEmail>
           </ProfileDetails>
         </ProfileInfo>
         <ProfileActions>

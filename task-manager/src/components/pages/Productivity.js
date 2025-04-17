@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { useTask } from '../../contexts/TaskContext';
 
 const ProductivityContainer = styled.div`
   padding: 20px;
@@ -50,7 +51,7 @@ const ViewDetailsButton = styled.button`
   cursor: pointer;
   
   &:hover {
-    background-color: #333;
+    opacity: 0.9;
   }
 `;
 
@@ -66,7 +67,7 @@ const SummaryCards = styled.div`
 
 const SummaryCard = styled.div`
   flex: 1;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -81,6 +82,7 @@ const CardTitle = styled.p`
 const CardValue = styled.p`
   font-size: 2rem;
   font-weight: bold;
+  color: ${props => props.theme.colors.text};
 `;
 
 const VisualDataSection = styled.div`
@@ -104,7 +106,7 @@ const ExportButton = styled.button`
   cursor: pointer;
   
   &:hover {
-    background-color: #333;
+    opacity: 0.9;
   }
 `;
 
@@ -120,7 +122,7 @@ const ChartsContainer = styled.div`
 `;
 
 const ChartCard = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -129,6 +131,7 @@ const ChartCard = styled.div`
 const ChartTitle = styled.h3`
   font-size: 1.2rem;
   margin-bottom: 15px;
+  color: ${props => props.theme.colors.text};
 `;
 
 const ChartSubtitle = styled.p`
@@ -157,54 +160,139 @@ const BarItem = styled.div`
   border-radius: 4px 4px 0 0;
 `;
 
-const LineChartPlaceholder = styled.div`
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 0%, transparent 80%, rgba(33, 150, 243, 0.1) 80%, rgba(33, 150, 243, 0.1) 100%);
-  position: relative;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: rgba(33, 150, 243, 0.5);
-    transform: translateY(-50%);
-  }
-  
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='none' stroke='%232196F3' stroke-width='5' d='M0,160L60,170.7C120,181,240,203,360,192C480,181,600,139,720,138.7C840,139,960,181,1080,181.3C1200,181,1320,139,1380,117.3L1440,96'%3E%3C/path%3E%3C/svg%3E") no-repeat;
-    background-size: 100% 100%;
-  }
-`;
-
 const PieChartPlaceholder = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 50%;
   background: conic-gradient(
-    ${props => props.theme.colors.primary} 0% 30%,
-    ${props => props.theme.colors.darkGray} 30% 55%,
-    ${props => props.theme.colors.lightGray} 55% 100%
+    ${props => props.theme.colors.primary} 0% ${props => props.completionPercentage}%,
+    ${props => props.theme.colors.darkGray} ${props => props.completionPercentage}% 100%
   );
   margin: 0 auto;
 `;
 
 const ChartLegend = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   font-size: 0.8rem;
   color: ${props => props.theme.colors.darkGray};
+  margin-top: 15px;
+`;
+
+const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+`;
+
+const LegendColor = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: ${props => props.color};
+  margin-right: 5px;
+`;
+
+const PointsSection = styled.div`
+  margin-bottom: 40px;
+`;
+
+const PointsCard = styled.div`
+  background-color: ${props => props.theme.colors.cardBackground};
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const PointsHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const PointsTitle = styled.h3`
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  color: ${props => props.theme.colors.text};
+`;
+
+const PointsValue = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: ${props => props.theme.colors.primary};
+`;
+
+const PointsTable = styled.div`
+  width: 100%;
+`;
+
+const PointsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid ${props => props.theme.colors.lightGray};
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const PointsLabel = styled.div`
+  color: ${props => props.theme.colors.text};
+`;
+
+const PointsAmount = styled.div`
+  font-weight: 500;
+  color: ${props => props.theme.colors.text};
 `;
 
 const Productivity = () => {
+  const { 
+    tasks, 
+    getTotalTasksCount, 
+    getCompletionPercentage, 
+    getTotalPoints 
+  } = useTask();
+  
+  const [totalTasks, setTotalTasks] = useState(0);
+  const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [streak, setStreak] = useState(0);
+  
+  // Here we calculate the total # of subtasks
+  const getTotalSubtasksCount = () => {
+    return tasks.reduce((total, task) => total + task.subtasks.length, 0);
+  };
+  
+  // Here we calculate the user's streak 
+  const calculateStreak = useCallback(() => {
+    const completedTasks = tasks.filter(task => task.completed).length;
+    return Math.min(Math.floor(completedTasks / 2), 14); // Cap at 14 days for demo
+  }, [tasks]);
+  
+  // Here we update stats whenever tasks change
+  useEffect(() => {
+    setTotalTasks(getTotalTasksCount());
+    setCompletionPercentage(getCompletionPercentage());
+    setTotalPoints(getTotalPoints());
+    setStreak(calculateStreak());
+  }, [tasks, getTotalTasksCount, getCompletionPercentage, getTotalPoints, calculateStreak]);
+  
+  // Here we get tasks by category for the pie chart
+  const getTasksByCategory = () => {
+    const categories = {};
+    tasks.forEach(task => {
+      if (!categories[task.category]) {
+        categories[task.category] = 0;
+      }
+      categories[task.category]++;
+    });
+    return categories;
+  };
+  
+  const tasksByCategory = getTasksByCategory();
+  
   return (
     <ProductivityContainer>
       <ProductivityHeader>
@@ -221,21 +309,50 @@ const Productivity = () => {
         
         <SummaryCards>
           <SummaryCard>
-            <CardTitle>Tasks Completed This Week</CardTitle>
-            <CardValue>X%</CardValue>
+            <CardTitle>Tasks Completed</CardTitle>
+            <CardValue>{completionPercentage}%</CardValue>
           </SummaryCard>
           
           <SummaryCard>
             <CardTitle>Streak</CardTitle>
-            <CardValue>[X] Days</CardValue>
+            <CardValue>{streak} Days</CardValue>
           </SummaryCard>
           
           <SummaryCard>
             <CardTitle>Total Tasks</CardTitle>
-            <CardValue>[Number]</CardValue>
+            <CardValue>{totalTasks}</CardValue>
           </SummaryCard>
         </SummaryCards>
       </SummarySection>
+      
+      <PointsSection>
+        <SectionTitle>Points System</SectionTitle>
+        <PointsCard>
+          <PointsHeader>
+            <PointsTitle>Total Points Earned</PointsTitle>
+            <PointsValue>{totalPoints} pts</PointsValue>
+          </PointsHeader>
+          
+          <PointsTable>
+            <PointsRow>
+              <PointsLabel>High Priority Tasks</PointsLabel>
+              <PointsAmount>10 points each</PointsAmount>
+            </PointsRow>
+            <PointsRow>
+              <PointsLabel>Medium Priority Tasks</PointsLabel>
+              <PointsAmount>5 points each</PointsAmount>
+            </PointsRow>
+            <PointsRow>
+              <PointsLabel>Low Priority Tasks</PointsLabel>
+              <PointsAmount>3 points each</PointsAmount>
+            </PointsRow>
+            <PointsRow>
+              <PointsLabel>Subtasks Completed</PointsLabel>
+              <PointsAmount>{getTotalSubtasksCount()} subtasks</PointsAmount>
+            </PointsRow>
+          </PointsTable>
+        </PointsCard>
+      </PointsSection>
       
       <VisualDataSection>
         <VisualDataHeader>
@@ -245,8 +362,26 @@ const Productivity = () => {
         
         <ChartsContainer>
           <ChartCard>
-            <ChartTitle>Daily Completion Rate</ChartTitle>
-            <ChartSubtitle>Last 7 days</ChartSubtitle>
+            <ChartTitle>Task Completion Rate</ChartTitle>
+            <ChartSubtitle>Overall progress</ChartSubtitle>
+            <ChartContainer>
+              <PieChartPlaceholder completionPercentage={completionPercentage} />
+            </ChartContainer>
+            <ChartLegend>
+              <LegendItem>
+                <LegendColor color={props => props.theme.colors.primary} />
+                <span>Completed ({completionPercentage}%)</span>
+              </LegendItem>
+              <LegendItem>
+                <LegendColor color={props => props.theme.colors.darkGray} />
+                <span>Remaining ({100 - completionPercentage}%)</span>
+              </LegendItem>
+            </ChartLegend>
+          </ChartCard>
+          
+          <ChartCard>
+            <ChartTitle>Points Earned</ChartTitle>
+            <ChartSubtitle>Total: {totalPoints} points</ChartSubtitle>
             <ChartContainer>
               <BarChartPlaceholder>
                 <BarItem height={60} />
@@ -258,16 +393,7 @@ const Productivity = () => {
                 <BarItem height={65} />
               </BarChartPlaceholder>
             </ChartContainer>
-            <ChartLegend>Days</ChartLegend>
-          </ChartCard>
-          
-          <ChartCard>
-            <ChartTitle>Points Earned Over Time</ChartTitle>
-            <ChartSubtitle>Last 30 days</ChartSubtitle>
-            <ChartContainer>
-              <LineChartPlaceholder />
-            </ChartContainer>
-            <ChartLegend>Days</ChartLegend>
+            <ChartLegend>Last 7 days</ChartLegend>
           </ChartCard>
         </ChartsContainer>
         
@@ -275,9 +401,18 @@ const Productivity = () => {
           <ChartTitle>Tasks Breakdown</ChartTitle>
           <ChartSubtitle>By category</ChartSubtitle>
           <ChartContainer>
-            <PieChartPlaceholder />
+            <PieChartPlaceholder completionPercentage={70} />
           </ChartContainer>
-          <ChartLegend>Categories</ChartLegend>
+          <ChartLegend>
+            {Object.keys(tasksByCategory).map((category, index) => (
+              <LegendItem key={index}>
+                <LegendColor color={index === 0 ? props => props.theme.colors.primary : 
+                              index === 1 ? props => props.theme.colors.warning : 
+                              props => props.theme.colors.success} />
+                <span>{category} ({tasksByCategory[category]})</span>
+              </LegendItem>
+            ))}
+          </ChartLegend>
         </ChartCard>
       </VisualDataSection>
     </ProductivityContainer>

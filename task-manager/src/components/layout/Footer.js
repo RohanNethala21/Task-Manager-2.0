@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const FooterContainer = styled.footer`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.cardBackground};
   padding: 20px;
   text-align: center;
-  border-top: 1px solid ${props => props.theme.colors.lightGray};
+  border-top: 1px solid ${props => props.theme.colors.border};
   margin-top: auto;
 `;
 
 const Copyright = styled.p`
   font-size: 0.9rem;
-  color: ${props => props.theme.colors.darkGray};
+  color: ${props => props.theme.colors.text};
   margin-bottom: 10px;
 `;
 
@@ -24,7 +24,7 @@ const FooterLinks = styled.div`
 `;
 
 const FooterLink = styled(Link)`
-  color: ${props => props.theme.colors.darkGray};
+  color: ${props => props.theme.colors.text};
   
   &:hover {
     color: ${props => props.theme.colors.primary};
