@@ -234,7 +234,7 @@ const Dashboard = () => {
     setActiveTasks(active.slice(0, 3)); 
   }, [tasks, getTotalPoints]);
 
-  // Helper function to get emoji based on task category
+  // This is a helper function to get emoji based on task category
   const getTaskEmoji = (category) => {
     switch(category) {
       case 'Work': return '💼';

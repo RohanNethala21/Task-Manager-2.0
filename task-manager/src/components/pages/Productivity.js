@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback } from 'react'; // Removed useState
+import React, { useEffect, useCallback } from 'react'; 
 import { useTask } from '../../contexts/TaskContext';
 import PropTypes from 'prop-types';
-import styled from 'styled-components'; // Ensure this is used for styled components
+import styled from 'styled-components';
 
 const ProductivityContainer = styled.div`
   padding: 20px;
@@ -9,7 +9,7 @@ const ProductivityContainer = styled.div`
   color: ${props => props.theme.colors.text};
 `;
 
-const Productivity = () => { // Removed theme from props
+const Productivity = () => { 
   const { 
     tasks, 
     getTotalTasksCount, 
@@ -19,11 +19,11 @@ const Productivity = () => { // Removed theme from props
   
   const calculateStreak = useCallback(() => {
     const completedTasks = tasks.filter(task => task.completed).length;
-    return Math.min(Math.floor(completedTasks / 2), 14); // Cap at 14 days for demo
+    return Math.min(Math.floor(completedTasks / 2), 14); 
   }, [tasks]);
   
   useEffect(() => {
-    // Perform any necessary side effects here
+    // If any necessary side effects are needed, they're performed here
     const totalTasks = getTotalTasksCount();
     const completionPercentage = getCompletionPercentage();
     const totalPoints = getTotalPoints();
@@ -35,7 +35,6 @@ const Productivity = () => { // Removed theme from props
   return (
     <ProductivityContainer>
       <h1>Productivity Dashboard</h1>
-      {/* Add meaningful JSX here */}
     </ProductivityContainer>
   );
 };

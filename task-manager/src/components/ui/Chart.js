@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -15,7 +15,7 @@ import {
 } from 'chart.js';
 import styled from 'styled-components';
 
-// Register ChartJS components
+//Here we register all of our ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -76,16 +76,16 @@ const Chart = ({
 };
 
 Chart.propTypes = {
-  type: PropTypes.oneOf(['line', 'bar', 'pie']), // Must be one of the supported chart types
-  data: PropTypes.object.isRequired, // Chart.js data object is required
-  options: PropTypes.object, // Chart.js options object
-  height: PropTypes.string, // Height of the chart container
+  type: PropTypes.oneOf(['line', 'bar', 'pie']),
+  data: PropTypes.object.isRequired, 
+  options: PropTypes.object,
+  height: PropTypes.string, 
 };
 
 Chart.defaultProps = {
-  type: 'line', // Default chart type
-  options: {}, // Default options
-  height: '300px', // Default height
+  type: 'line', 
+  options: {}, 
+  height: '300px', 
 };
 
 export default Chart;
