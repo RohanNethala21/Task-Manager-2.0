@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-
+import PropTypes from 'prop-types';
 const RegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -292,5 +292,8 @@ const Register = () => {
     </RegisterContainer>
   );
 };
-
+Register.propTypes = {
+  register: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
+};
 export default Register;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
@@ -27,6 +28,10 @@ const ProtectedRoute = ({ children }) => {
   }
   
   return children;
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired, // Add PropTypes validation for children
 };
 
 function App() {

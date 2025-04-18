@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const InputContainer = styled.div`
   margin-bottom: ${props => props.marginBottom || '15px'};
@@ -68,6 +69,22 @@ const Input = ({
       {helperText && !error && <HelperText>{helperText}</HelperText>}
     </InputContainer>
   );
+};
+
+Input.propTypes = {
+  label: PropTypes.string, // Label for the input field
+  error: PropTypes.string, // Error message to display
+  helperText: PropTypes.string, // Helper text to display
+  fullWidth: PropTypes.bool, // Whether the input should take full width
+  marginBottom: PropTypes.string, // Margin below the input container
+};
+
+Input.defaultProps = {
+  label: '', // Default label is an empty string
+  error: '', // Default error is an empty string
+  helperText: '', // Default helper text is an empty string
+  fullWidth: false, // Default is not full width
+  marginBottom: '15px', // Default margin bottom
 };
 
 export default Input;

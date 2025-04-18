@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const ButtonComponent = styled.button`
   padding: ${props => props.size === 'small' ? '8px 15px' : props.size === 'large' ? '14px 28px' : '12px 20px'};
@@ -45,6 +46,19 @@ const Button = ({ children, variant, size, fullWidth, ...props }) => {
       {children}
     </ButtonComponent>
   );
+};
+
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['outline', 'default']),
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  fullWidth: PropTypes.bool,
+};
+
+Button.defaultProps = {
+  variant: 'default',
+  size: 'medium',
+  fullWidth: false,
 };
 
 export default Button;

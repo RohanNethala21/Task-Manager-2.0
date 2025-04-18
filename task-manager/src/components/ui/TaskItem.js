@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Subtasks from './Subtasks';
 import { useTask } from '../../contexts/TaskContext';
-
+import PropTypes from 'prop-types';
 const TaskItemContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -245,5 +245,31 @@ const TaskItem = ({
     </TaskItemContainer>
   );
 };
+TaskItem.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  dueDate: PropTypes.string,
+  priority: PropTypes.oneOf(['high', 'medium', 'low']),
+  completed: PropTypes.bool,
+  overdue: PropTypes.bool,
+  subtasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+    })
+  ),
+  onToggleComplete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
 
+TaskItem.defaultProps = {
+  dueDate: null,
+  priority: 'medium',
+  completed: false,
+  overdue: false,
+  subtasks: [],
+};
 export default TaskItem;

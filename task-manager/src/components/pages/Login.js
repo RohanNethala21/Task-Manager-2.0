@@ -207,7 +207,7 @@ const Login = () => {
             <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login to Your Account</h2>
             
             <RegisterLink>
-              Don't have an account? <Link to="/register">Register</Link>
+              Don&apos;t have an account? <Link to="/register">Register</Link>
             </RegisterLink>
             
             {error && <ErrorMessage>{error}</ErrorMessage>}

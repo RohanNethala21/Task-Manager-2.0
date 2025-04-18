@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const TaskContext = createContext();
 
@@ -124,7 +125,7 @@ export const TaskProvider = ({ children }) => {
     ));
   };
 
-  // Add a subtask to a task
+  // Here we add a subtask to a task
   const addSubtask = (taskId, subtask) => {
     setTasks(tasks.map(task => {
       if (task.id === taskId) {
@@ -142,7 +143,7 @@ export const TaskProvider = ({ children }) => {
     }));
   };
 
-  // Delete a subtask
+  // This part is for deleting a subtask
   const deleteSubtask = (taskId, subtaskId) => {
     setTasks(tasks.map(task => {
       if (task.id === taskId) {
@@ -155,7 +156,7 @@ export const TaskProvider = ({ children }) => {
     }));
   };
 
-  // Toggle subtask completion
+  // Here we toggle whether a subtask was completed or not
   const toggleSubtaskCompletion = (taskId, subtaskId) => {
     setTasks(tasks.map(task => {
       if (task.id === taskId) {
@@ -163,7 +164,7 @@ export const TaskProvider = ({ children }) => {
           subtask.id === subtaskId ? { ...subtask, completed: !subtask.completed } : subtask
         );
         
-        // Check if all subtasks are completed
+        // Then we check if all subtasks are completed
         const allSubtasksCompleted = updatedSubtasks.length > 0 && 
           updatedSubtasks.every(subtask => subtask.completed);
         
@@ -178,7 +179,7 @@ export const TaskProvider = ({ children }) => {
     }));
   };
 
-  // Edit a subtask
+  // Here we edit a subtask
   const editSubtask = (taskId, subtaskId, updatedSubtask) => {
     setTasks(tasks.map(task => {
       if (task.id === taskId) {
@@ -193,12 +194,12 @@ export const TaskProvider = ({ children }) => {
     }));
   };
 
-  // Calculate total tasks count
+  // Here we calculate total tasks count
   const getTotalTasksCount = () => {
     return tasks.length;
   };
 
-  // Calculate completed tasks percentage
+  // Then we calculate completed tasks percentage
   const getCompletionPercentage = () => {
     if (tasks.length === 0) return 0;
     
@@ -206,7 +207,7 @@ export const TaskProvider = ({ children }) => {
     return Math.round((completedTasks / tasks.length) * 100);
   };
 
-  // Calculate total points earned
+  // Finally, we calculate total points earned
   const getTotalPoints = () => {
     return tasks
       .filter(task => task.completed)
@@ -232,6 +233,11 @@ export const TaskProvider = ({ children }) => {
       {children}
     </TaskContext.Provider>
   );
+};
+
+// Here we add PropTypes validation
+TaskProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export const useTask = () => useContext(TaskContext);

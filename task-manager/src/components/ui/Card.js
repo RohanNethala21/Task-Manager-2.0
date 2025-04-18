@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import PropTypes from 'prop-types';
 const CardContainer = styled.div`
   background-color: #ffffff;
   border-radius: 8px;
@@ -77,5 +77,30 @@ const Card = ({
     </CardContainer>
   );
 };
+Card.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string,
+  extra: PropTypes.node,
+  footer: PropTypes.node,
+  footerAlign: PropTypes.oneOf(['flex-start', 'center', 'flex-end']),
+  bordered: PropTypes.bool,
+  hoverable: PropTypes.bool,
+  padding: PropTypes.string,
+  marginBottom: PropTypes.string,
+  headerDivider: PropTypes.bool,
+  footerDivider: PropTypes.bool,
+};
 
+Card.defaultProps = {
+  title: null,
+  extra: null,
+  footer: null,
+  footerAlign: 'flex-end',
+  bordered: false,
+  hoverable: false,
+  padding: '20px',
+  marginBottom: '20px',
+  headerDivider: false,
+  footerDivider: false,
+};
 export default Card;

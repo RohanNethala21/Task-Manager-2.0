@@ -354,7 +354,7 @@ const Dashboard = () => {
               <TaskEmoji><span role="img" aria-label=''>🎉</span></TaskEmoji>
               <TaskDetails>
                 <TaskName>No upcoming deadlines</TaskName>
-                <TaskDueDate>You're all set!</TaskDueDate>
+                <TaskDueDate>You&apos;re all set!</TaskDueDate>
               </TaskDetails>
               <TaskPriority>-</TaskPriority>
             </TaskItem>

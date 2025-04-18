@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
-
+import PropTypes from 'prop-types';
 const SettingsContainer = styled.div`
   padding: 20px;
 `;
@@ -291,5 +291,14 @@ const Settings = () => {
     </SettingsContainer>
   );
 };
+Settings.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+  }),
+};
 
+Settings.defaultProps = {
+  user: null,
+};
 export default Settings;

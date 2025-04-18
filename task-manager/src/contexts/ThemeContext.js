@@ -1,25 +1,26 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types'; 
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  // Check if theme preference exists in localStorage, default to 'light'
+  // Here we check if theme preference exists in localStorage, default to 'light'
   const [themeMode, setThemeMode] = useState(() => {
     const savedTheme = localStorage.getItem('taskManagerTheme');
     return savedTheme || 'light';
   });
 
-  // Save theme preference to localStorage whenever it changes
+  // Here we save theme preference to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('taskManagerTheme', themeMode);
   }, [themeMode]);
 
-  // Toggle between light and dark mode
+  // Here the toggle between light and dark mode is defined
   const toggleTheme = () => {
     setThemeMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
 
-  // Define theme objects for light and dark modes
+  // Here we define theme objects for light and dark modes
   const lightTheme = {
     colors: {
       primary: '#000000',
@@ -47,16 +48,16 @@ export const ThemeProvider = ({ children }) => {
 
   const darkTheme = {
     colors: {
-      primary: '#BB86FC', // Purple-ish primary color for dark mode
+      primary: '#BB86FC', 
       secondary: '#121212',
-      background: '#121212', // Dark background
-      cardBackground: '#1E1E1E', // Slightly lighter than background for cards
+      background: '#121212', 
+      cardBackground: '#1E1E1E',
       success: '#4CAF50',
       warning: '#FF5252',
       highPriority: '#FFC107',
-      text: '#E1E1E1', // Light text for dark background
-      lightGray: '#333333', // Darker gray for dark mode
-      darkGray: '#BBBBBB', // Lighter gray for dark mode
+      text: '#E1E1E1', 
+      lightGray: '#333333',
+      darkGray: '#BBBBBB', 
       border: '#333333'
     },
     fonts: {
@@ -70,7 +71,7 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  // Select the appropriate theme based on themeMode
+  // Here we select the appropriate theme based on themeMode
   const theme = themeMode === 'light' ? lightTheme : darkTheme;
 
   return (
@@ -78,6 +79,11 @@ export const ThemeProvider = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
+};
+
+// Here we add PropTypes validation
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export const useTheme = () => useContext(ThemeContext);

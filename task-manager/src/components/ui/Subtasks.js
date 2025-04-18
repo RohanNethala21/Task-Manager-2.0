@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import PropTypes from 'prop-types';
 const SubtaskContainer = styled.div`
   margin-left: 40px;
   margin-top: 10px;
@@ -197,5 +197,18 @@ const Subtasks = ({
     </SubtaskContainer>
   );
 };
-
+Subtasks.propTypes = {
+  taskId: PropTypes.number.isRequired,
+  subtasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+  onToggleSubtask: PropTypes.func.isRequired,
+  onAddSubtask: PropTypes.func.isRequired,
+  onEditSubtask: PropTypes.func.isRequired,
+  onDeleteSubtask: PropTypes.func.isRequired,
+};
 export default Subtasks;
