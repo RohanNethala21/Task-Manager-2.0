@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTask } from '../../contexts/TaskContext';
+import TaskItem from '../ui/TaskItem';
 
 const TasksContainer = styled.div`
   padding: 20px;
@@ -76,84 +77,6 @@ const TaskCardsContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   margin-bottom: 40px;
-`;
-
-const TaskCard = styled.div`
-  background-color: ${props => props.theme.colors.cardBackground};
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  border-left: 4px solid ${props => {
-    switch (props.priority) {
-      case 'high':
-        return props.theme.colors.warning;
-      case 'medium':
-        return props.theme.colors.highPriority;
-      default:
-        return props.theme.colors.success;
-    }
-  }};
-`;
-
-const TaskCheckbox = styled.div`
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid ${props => props.completed ? props.theme.colors.success : props.theme.colors.lightGray};
-  margin-right: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: ${props => props.completed ? props.theme.colors.success : 'transparent'};
-  
-  svg {
-    display: ${props => props.completed ? 'block' : 'none'};
-  }
-`;
-
-const TaskContent = styled.div`
-  flex: 1;
-`;
-
-const TaskTitle = styled.h3`
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-  text-decoration: ${props => props.completed ? 'line-through' : 'none'};
-  color: ${props => props.completed ? props.theme.colors.darkGray : props.theme.colors.text};
-`;
-
-const TaskDetails = styled.div`
-  display: flex;
-  font-size: 0.9rem;
-  color: ${props => props.theme.colors.darkGray};
-`;
-
-const TaskCategory = styled.span`
-  margin-right: 15px;
-`;
-
-const TaskDueDate = styled.span`
-  color: ${props => props.overdue ? props.theme.colors.warning : props.theme.colors.darkGray};
-  font-weight: ${props => props.overdue ? 'bold' : 'normal'};
-`;
-
-const TaskActions = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const ActionButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: ${props => props.theme.colors.darkGray};
-  
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-  }
 `;
 
 const AddNewTaskSection = styled.div`
@@ -299,7 +222,7 @@ const NoTasksMessage = styled.div`
 `;
 
 const Tasks = () => {
-  const { tasks, addTask, deleteTask, toggleTaskCompletion, editTask } = useTask();
+  const { tasks, addTask, deleteTask, toggleTaskCompletion, editTask} = useTask();
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const [showEditTaskForm, setShowEditTaskForm] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -619,42 +542,20 @@ const Tasks = () => {
         {filteredTasks.length > 0 ? (
           <TaskCardsContainer>
             {filteredTasks.map(task => (
-              <TaskCard key={task.id} priority={task.priority}>
-                <TaskCheckbox 
-                  completed={task.completed}
-                  onClick={() => toggleTaskCompletion(task.id)}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="white"/>
-                  </svg>
-                </TaskCheckbox>
-                
-                <TaskContent>
-                  <TaskTitle completed={task.completed}>{task.title}</TaskTitle>
-                  <TaskDetails>
-                    <TaskCategory>{task.category}</TaskCategory>
-                    {task.dueDate && (
-                      <TaskDueDate overdue={isOverdue(task.dueDate)}>
-                        Due: {new Date(task.dueDate).toLocaleDateString()}
-                      </TaskDueDate>
-                    )}
-                  </TaskDetails>
-                </TaskContent>
-                
-                <TaskActions>
-                  <ActionButton onClick={() => handleEditTaskClick(task)}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
-                    </svg>
-                  </ActionButton>
-                  
-                  <ActionButton onClick={() => deleteTask(task.id)}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
-                    </svg>
-                  </ActionButton>
-                </TaskActions>
-              </TaskCard>
+              <TaskItem 
+                key={task.id}
+                id={task.id}
+                title={task.title}
+                category={task.category}
+                dueDate={task.dueDate}
+                priority={task.priority}
+                completed={task.completed}
+                overdue={isOverdue(task.dueDate)}
+                subtasks={task.subtasks || []}
+                onToggleComplete={() => toggleTaskCompletion(task.id)}
+                onEdit={() => handleEditTaskClick(task)}
+                onDelete={() => deleteTask(task.id)}
+              />
             ))}
           </TaskCardsContainer>
         ) : (

@@ -101,21 +101,25 @@ const Subtasks = ({
   onToggleSubtask, 
   onAddSubtask, 
   onEditSubtask, 
-  onDeleteSubtask 
+  onDeleteSubtask,
+  showAddForm = false,
+  setShowAddForm,
+  newSubtaskTitle = '',
+  setNewSubtaskTitle,
+  onAddSubmit
 }) => {
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
   const [editingSubtaskId, setEditingSubtaskId] = useState(null);
   const [editingSubtaskTitle, setEditingSubtaskTitle] = useState('');
   
-  const handleAddSubmit = (e) => {
+  // Use the provided onAddSubmit if available, otherwise use the local implementation
+  const handleAddSubmit = onAddSubmit || ((e) => {
     e.preventDefault();
     if (newSubtaskTitle.trim()) {
       onAddSubtask(taskId, { title: newSubtaskTitle.trim() });
       setNewSubtaskTitle('');
       setShowAddForm(false);
     }
-  };
+  });
   
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -210,5 +214,18 @@ Subtasks.propTypes = {
   onAddSubtask: PropTypes.func.isRequired,
   onEditSubtask: PropTypes.func.isRequired,
   onDeleteSubtask: PropTypes.func.isRequired,
+  showAddForm: PropTypes.bool,
+  setShowAddForm: PropTypes.func,
+  newSubtaskTitle: PropTypes.string,
+  setNewSubtaskTitle: PropTypes.func,
+  onAddSubmit: PropTypes.func,
+};
+
+Subtasks.defaultProps = {
+  showAddForm: false,
+  newSubtaskTitle: '',
+  setShowAddForm: () => {},
+  setNewSubtaskTitle: () => {},
+  onAddSubmit: null,
 };
 export default Subtasks;

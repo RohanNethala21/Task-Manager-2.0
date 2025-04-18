@@ -108,6 +108,12 @@ const ActionButton = styled.button`
   }
 `;
 
+const AddSubtaskButton = styled(ActionButton)`
+  &:hover {
+    color: ${props => props.theme.colors.success};
+  }
+`;
+
 const SubtaskButton = styled(ActionButton)`
   display: flex;
   align-items: center;
@@ -159,10 +165,26 @@ const TaskItem = ({
   onDelete
 }) => {
   const [showSubtasks, setShowSubtasks] = useState(false);
+  const [showAddSubtaskForm, setShowAddSubtaskForm] = useState(false);
+  const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
   const { addSubtask, deleteSubtask, toggleSubtaskCompletion, editSubtask } = useTask();
   
   const toggleSubtasks = () => {
     setShowSubtasks(!showSubtasks);
+  };
+  
+  const handleAddSubtask = () => {
+    setShowSubtasks(true);
+    setShowAddSubtaskForm(true);
+  };
+  
+  const handleAddSubtaskSubmit = (e) => {
+    e.preventDefault();
+    if (newSubtaskTitle.trim()) {
+      addSubtask(id, { title: newSubtaskTitle.trim() });
+      setNewSubtaskTitle('');
+      setShowAddSubtaskForm(false);
+    }
   };
   
   const completedSubtasks = subtasks.filter(subtask => subtask.completed).length;
@@ -208,7 +230,7 @@ const TaskItem = ({
         </TaskContent>
         
         <TaskActions>
-          <SubtaskButton onClick={toggleSubtasks} title="Add/View Subtasks" showSubtasks={showSubtasks}>
+          <SubtaskButton onClick={toggleSubtasks} title="View Subtasks" showSubtasks={showSubtasks}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d={showSubtasks 
                 ? "M19 13H5v-2h14v2z" 
@@ -217,6 +239,12 @@ const TaskItem = ({
             </svg>
             {!showSubtasks && <span>Subtasks</span>}
           </SubtaskButton>
+          
+          <AddSubtaskButton onClick={handleAddSubtask} title="Add Subtask">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+            </svg>
+          </AddSubtaskButton>
           
           <ActionButton onClick={onEdit} title="Edit Task">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -240,6 +268,11 @@ const TaskItem = ({
           onAddSubtask={addSubtask}
           onEditSubtask={editSubtask}
           onDeleteSubtask={deleteSubtask}
+          showAddForm={showAddSubtaskForm}
+          setShowAddForm={setShowAddSubtaskForm}
+          newSubtaskTitle={newSubtaskTitle}
+          setNewSubtaskTitle={setNewSubtaskTitle}
+          onAddSubmit={handleAddSubtaskSubmit}
         />
       )}
     </TaskItemContainer>
