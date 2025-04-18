@@ -1,17 +1,15 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types'; 
 
-// Create context
 const AuthContext = createContext();
 
-// Create provider
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
 
-  // Check if user is already logged in (from localStorage)
+  // Here we check if user is already logged in (from localStorage)
   useEffect(() => {
     const checkLoggedIn = () => {
       const userData = localStorage.getItem('taskManagerUser');
@@ -20,12 +18,12 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
       }
       
-      // Load registered users
+      // Here we load registered users
       const registeredUsers = localStorage.getItem('taskManagerUsers');
       if (registeredUsers) {
         setUsers(JSON.parse(registeredUsers));
       } else {
-        // Initialize with empty array if no users exist
+        
         localStorage.setItem('taskManagerUsers', JSON.stringify([]));
         setUsers([]);
       }
@@ -36,29 +34,28 @@ export const AuthProvider = ({ children }) => {
     checkLoggedIn();
   }, []);
 
-  // Register function
   const register = (name, email, password) => {
-    // Check if email already exists
+    // Here we check if email already exists
     if (users.some(user => user.email === email)) {
       return { success: false, message: 'Email already registered' };
     }
     
-    // Create new user
+    // Here this will make a new user
     const newUser = {
       id: Date.now(),
       name,
       email,
-      password, // In a real app, this would be hashed
+      password, 
       role: 'user',
       createdAt: new Date().toISOString()
     };
     
-    // Add to users array
+    // Now we add the user to the users array
     const updatedUsers = [...users, newUser];
     localStorage.setItem('taskManagerUsers', JSON.stringify(updatedUsers));
     setUsers(updatedUsers);
     
-    // Auto login after registration
+    // Here we allow for auto login after registration
     localStorage.setItem('taskManagerUser', JSON.stringify(newUser));
     setUser(newUser);
     setIsAuthenticated(true);
@@ -66,9 +63,9 @@ export const AuthProvider = ({ children }) => {
     return { success: true };
   };
 
-  // Login function
+  // This is our Login function
   const login = (email, password) => {
-    // Find user with matching email and password
+    
     const foundUser = users.find(user => user.email === email && user.password === password);
     
     if (foundUser) {
@@ -103,10 +100,10 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Add PropTypes validation
+// Here is where we add proptypes validation
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// Custom hook to use auth context
+// This is just a custom hook to use auth context
 export const useAuth = () => useContext(AuthContext);
