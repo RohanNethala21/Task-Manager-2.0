@@ -1,0 +1,37 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_NAME=task_manager_2
+      - DATABASE_USER=task_manager_2
+      - DATABASE_PASSWORD=task_manager_2
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+    volumes:
+      - ./app.py:/app/app.py:ro
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: task_manager_2
+      POSTGRES_USER: task_manager_2
+      POSTGRES_PASSWORD: task_manager_2
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./populate.sql:/docker-entrypoint-initdb.d/populate.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_manager_2"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+
+volumes:
+  db_data:
+    driver: local
