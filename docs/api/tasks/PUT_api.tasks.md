@@ -1,4 +1,4 @@
-# PUT `/api/Tasks/<id>`
+# PUT `/api/tasks/<id>`
 
 Edits an existing Task's information by its ID.
 

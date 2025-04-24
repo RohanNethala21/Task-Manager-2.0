@@ -4,7 +4,7 @@ Deletes an existing user by their ID.
 
 | Name   | Values     | Description              |
 | ------ | ---------- | ------------------------ |
-| `id`   | `Integer`  | Target users             |
+| `id`   | `Integer`  | Target user              |
 
 ---
 ## Responses
