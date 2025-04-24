@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ThemeToggle from '../ui/ThemeToggle';
 
+/* the stylistic of the change of dark and light mode 
+within the navigation bar on our UI */
+
 const NavbarContainer = styled.nav`
   background-color: ${props => props.theme.colors.cardBackground};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
