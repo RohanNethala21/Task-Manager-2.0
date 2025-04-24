@@ -1,16 +1,16 @@
-# DELETE `/api/users/<id>`
+# DELETE `/api/Workspaces/<id>`
 
-Deletes an existing user by their ID.
+Deletes an existing Workspace by their ID.
 
 | Name   | Values     | Description              |
 | ------ | ---------- | ------------------------ |
-| `id`   | `Integer`  | Target users             |
+| `id`   | `Integer`  | Target workspace         |
 
 ---
 ## Responses
 
 ### `200 OK`
-User successfully deleted.
+Workspace successfully deleted.
 ```json
 {
   "good": true
@@ -18,11 +18,11 @@ User successfully deleted.
 ```
 
 ### `404 Not Found`
-No user exists with the given ID.
+No workspace exists with the given ID.
 ```json
 {
   "good": false,
-  "error": "User with that ID does not exist"
+  "error": "Workspace with that ID does not exist"
 }
 ```
 

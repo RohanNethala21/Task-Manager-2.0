@@ -1,16 +1,16 @@
-# DELETE `/api/users/<id>`
+# DELETE `/api/tasks/<id>`
 
-Deletes an existing user by their ID.
+Deletes an existing Task by their ID.
 
 | Name   | Values     | Description              |
 | ------ | ---------- | ------------------------ |
-| `id`   | `Integer`  | Target users             |
+| `id`   | `Integer`  | Target task              |
 
 ---
 ## Responses
 
 ### `200 OK`
-User successfully deleted.
+Task successfully deleted.
 ```json
 {
   "good": true
@@ -18,11 +18,11 @@ User successfully deleted.
 ```
 
 ### `404 Not Found`
-No user exists with the given ID.
+No Task exists with the given ID.
 ```json
 {
   "good": false,
-  "error": "User with that ID does not exist"
+  "error": "Task with that ID does not exist"
 }
 ```
 
