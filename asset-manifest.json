@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/Task-Manager-2.0/static/css/main.69eda509.chunk.css",
-    "main.js": "/Task-Manager-2.0/static/js/main.3bccb08d.chunk.js",
-    "main.js.map": "/Task-Manager-2.0/static/js/main.3bccb08d.chunk.js.map",
-    "runtime-main.js": "/Task-Manager-2.0/static/js/runtime-main.0e26194e.js",
-    "runtime-main.js.map": "/Task-Manager-2.0/static/js/runtime-main.0e26194e.js.map",
-    "static/js/2.ae23d615.chunk.js": "/Task-Manager-2.0/static/js/2.ae23d615.chunk.js",
-    "static/js/2.ae23d615.chunk.js.map": "/Task-Manager-2.0/static/js/2.ae23d615.chunk.js.map",
-    "static/js/3.b0b0b0f4.chunk.js": "/Task-Manager-2.0/static/js/3.b0b0b0f4.chunk.js",
-    "static/js/3.b0b0b0f4.chunk.js.map": "/Task-Manager-2.0/static/js/3.b0b0b0f4.chunk.js.map",
-    "index.html": "/Task-Manager-2.0/index.html",
-    "precache-manifest.d4bd03b9e7d6305957457244a8b72f27.js": "/Task-Manager-2.0/precache-manifest.d4bd03b9e7d6305957457244a8b72f27.js",
-    "service-worker.js": "/Task-Manager-2.0/service-worker.js",
-    "static/css/main.69eda509.chunk.css.map": "/Task-Manager-2.0/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.ae23d615.chunk.js.LICENSE.txt": "/Task-Manager-2.0/static/js/2.ae23d615.chunk.js.LICENSE.txt"
+    "main.css": "/Task-Manager-2.0/task-manager/static/css/main.69eda509.chunk.css",
+    "main.js": "/Task-Manager-2.0/task-manager/static/js/main.3bccb08d.chunk.js",
+    "main.js.map": "/Task-Manager-2.0/task-manager/static/js/main.3bccb08d.chunk.js.map",
+    "runtime-main.js": "/Task-Manager-2.0/task-manager/static/js/runtime-main.a315f2e7.js",
+    "runtime-main.js.map": "/Task-Manager-2.0/task-manager/static/js/runtime-main.a315f2e7.js.map",
+    "static/js/2.b18f2c74.chunk.js": "/Task-Manager-2.0/task-manager/static/js/2.b18f2c74.chunk.js",
+    "static/js/2.b18f2c74.chunk.js.map": "/Task-Manager-2.0/task-manager/static/js/2.b18f2c74.chunk.js.map",
+    "static/js/3.b0b0b0f4.chunk.js": "/Task-Manager-2.0/task-manager/static/js/3.b0b0b0f4.chunk.js",
+    "static/js/3.b0b0b0f4.chunk.js.map": "/Task-Manager-2.0/task-manager/static/js/3.b0b0b0f4.chunk.js.map",
+    "index.html": "/Task-Manager-2.0/task-manager/index.html",
+    "precache-manifest.3526eb66af3e7854b6ac38d0b7af62d4.js": "/Task-Manager-2.0/task-manager/precache-manifest.3526eb66af3e7854b6ac38d0b7af62d4.js",
+    "service-worker.js": "/Task-Manager-2.0/task-manager/service-worker.js",
+    "static/css/main.69eda509.chunk.css.map": "/Task-Manager-2.0/task-manager/static/css/main.69eda509.chunk.css.map",
+    "static/js/2.b18f2c74.chunk.js.LICENSE.txt": "/Task-Manager-2.0/task-manager/static/js/2.b18f2c74.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.0e26194e.js",
-    "static/js/2.ae23d615.chunk.js",
+    "static/js/runtime-main.a315f2e7.js",
+    "static/js/2.b18f2c74.chunk.js",
     "static/css/main.69eda509.chunk.css",
     "static/js/main.3bccb08d.chunk.js"
   ]
